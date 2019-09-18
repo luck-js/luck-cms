@@ -1,0 +1,11 @@
+.git
+.gitattributes
+.travis.yml
+README.md
+docker-compose.yml
+
+db
+.cache
+node_modules
+build
+public/uploads

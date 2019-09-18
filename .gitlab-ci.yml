@@ -1,0 +1,60 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  CMS_IMAGE_NAME: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_NAME
+  CMS_CONTAINER_NAME: calkiemtucicho-cms
+  DB_CONTAINER_NAME: calkiemtucicho-db
+  DEVELOPMENT_VIRTUAL_HOST: strapi.calkiemtucicho.pl
+
+build:
+  stage: build
+  image: docker:latest
+  tags:
+    - docker
+  only:
+    - develop
+  services:
+    - docker:dind
+  before_script:
+    - docker version
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+  script:
+    - docker build -t $CMS_IMAGE_NAME --pull .
+    - docker push $CMS_IMAGE_NAME
+  after_script:
+    - docker logout $CI_REGISTRY
+
+
+.deploy-blueprint: &deploy
+  stage: deploy
+  tags:
+    - linux
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $HOST_IP > ~/.ssh/known_hosts
+  script:
+    - |
+      ssh $HOST_IP <<EOD
+      docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+      docker pull $CMS_IMAGE_NAME
+      docker stop $CMS_CONTAINER_NAME || true && docker rm $CMS_CONTAINER_NAME || true
+      docker run --env-file /root/$DEVELOPMENT_VIRTUAL_HOST/envs_db -v /root/$DEVELOPMENT_VIRTUAL_HOST/data-db:/data/db -d --name $DB_CONTAINER_NAME mongo:latest
+      docker run --env-file /root/$DEVELOPMENT_VIRTUAL_HOST/envs_cms -e VIRTUAL_HOST=$VIRTUAL_HOST -e LETSENCRYPT_HOST=$LETSENCRYPT_HOST -d --link $DB_CONTAINER_NAME:db --name $CMS_CONTAINER_NAME $CMS_IMAGE_NAME
+      if [ "$(docker ps -q -f name=nginx)" ]; then
+          docker exec nginx nginx -s reload
+      fi
+      EOD
+
+deploy:test:
+  <<: *deploy
+  only:
+    - develop
+  variables:
+    VIRTUAL_HOST: www.$DEVELOPMENT_VIRTUAL_HOST,$DEVELOPMENT_VIRTUAL_HOST
+    LETSENCRYPT_HOST: $DEVELOPMENT_VIRTUAL_HOST
