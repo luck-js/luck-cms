@@ -1,0 +1,38 @@
+{
+  "connection": "default",
+  "collectionName": "post",
+  "info": {
+    "name": "post",
+    "description": ""
+  },
+  "options": {
+    "timestamps": [
+      "createdAt",
+      "updatedAt"
+    ]
+  },
+  "attributes": {
+    "title": {
+      "configurable": false,
+      "unique": true,
+      "required": true,
+      "type": "string"
+    },
+    "content": {
+      "configurable": false,
+      "required": true,
+      "type": "richtext"
+    },
+    "slug": {
+      "configurable": false,
+      "unique": true,
+      "required": true,
+      "type": "string"
+    },
+    "isDraft": {
+      "configurable": false,
+      "default": true,
+      "type": "boolean"
+    }
+  }
+}
