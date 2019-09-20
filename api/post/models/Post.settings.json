@@ -25,13 +25,22 @@
     },
     "slug": {
       "configurable": false,
-      "required": true,
       "type": "string"
     },
     "isDraft": {
       "configurable": false,
       "default": true,
       "type": "boolean"
+    },
+    "cover": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "description": {
+      "required": true,
+      "type": "text"
     }
   }
 }
