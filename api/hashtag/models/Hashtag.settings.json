@@ -1,0 +1,23 @@
+{
+  "connection": "default",
+  "collectionName": "",
+  "info": {
+    "name": "hashtag",
+    "description": ""
+  },
+  "options": {
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "configurable": false,
+      "required": true,
+      "type": "string"
+    },
+    "posts": {
+      "configurable": false,
+      "collection": "post",
+      "via": "hashtags"
+    }
+  }
+}

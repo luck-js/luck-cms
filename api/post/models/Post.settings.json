@@ -41,6 +41,13 @@
     "description": {
       "required": true,
       "type": "text"
+    },
+    "hashtags": {
+      "configurable": false,
+      "required": true,
+      "collection": "hashtag",
+      "via": "posts",
+      "dominant": true
     }
   }
 }
