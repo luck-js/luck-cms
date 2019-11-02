@@ -42,6 +42,11 @@
       "required": true,
       "type": "text"
     },
+    "date": {
+      "configurable": false,
+      "required": true,
+      "type": "date"
+    },
     "hashtags": {
       "configurable": false,
       "required": true,
