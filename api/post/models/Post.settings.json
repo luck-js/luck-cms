@@ -38,6 +38,24 @@
       "plugin": "upload",
       "required": true
     },
+    "coverPlaceholder": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "wideCover": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "wideCoverPlaceholder": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
     "description": {
       "required": true,
       "type": "text"
