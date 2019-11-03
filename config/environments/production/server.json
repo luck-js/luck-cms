@@ -2,7 +2,9 @@
   "host": "localhost",
   "port": "${process.env.PORT || 1337}",
   "proxy": {
-    "enabled": false
+    "enabled": true,
+    "ssl": true,
+    "host": "${process.env.VIRTUAL_HOST}"
   },
   "cron": {
     "enabled": false
