@@ -4,7 +4,7 @@
   "proxy": {
     "enabled": true,
     "ssl": true,
-    "host": "${process.env.VIRTUAL_HOST}"
+    "host": "${process.env.HOST}"
   },
   "cron": {
     "enabled": false
