@@ -19,7 +19,7 @@ jobs:
     env: CMS_IMAGE_NAME=$CMS_IMAGE_NAME
   - stage: deploy
     before_deploy:
-    - openssl aes-256-cbc -K $encrypted_cb7c2a716d0d_key -iv $encrypted_cb7c2a716d0d_iv
+    - openssl aes-256-cbc -K $encrypted_45457958fdd0_key -iv $encrypted_45457958fdd0_iv
       -in .travis/id_rsa.enc -out .travis/id_rsa -d
     - eval "$(ssh-agent -s)"
     - cp .travis/id_rsa ~/.ssh/id_rsa
